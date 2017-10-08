@@ -3,30 +3,31 @@
  * @type Javascript raw file
  * 
  */
+var scrollingTime = 1250; // 1250ms scrolling timer by default for a modern PC.
+var songsShownByPage = 100; // 100 at the time this code is written.
 
 var totalSongsContainer = document.getElementsByClassName("entity-additional-info");
 var totalSongs = totalSongsContainer[0].innerText.split(' ')[0];
 console.log('Total songs to export: ' + totalSongs);
 recursiveScrollDown(totalSongs);
 
-
 /*
  * Functions declarations:
  */
 
-
 function recursiveScrollDown(totalSongs) {
-    if (totalSongs > 100) {
+    if (totalSongs > 1) {
         setTimeout(function () {
-            var lastSong = (totalSongs - 100 <= 1) ? 1 : (totalSongs - 100);
-            console.log('More than 100 songs detected. Scrolling down from song #' + totalSongs + ' to song #' + lastSong);
+            var lastSong = (totalSongs - songsShownByPage <= 1) ? 1 : (totalSongs - songsShownByPage);
+            console.log('More than ' + songsShownByPage + ' songs detected. Scrolling down from song #' + totalSongs + ' to song #' + lastSong);
             window.scrollTo(0, document.body.scrollHeight);
-            totalSongs -= 100;
+            totalSongs -= songsShownByPage;
             recursiveScrollDown(totalSongs);
-        }, 1250);
+        }, scrollingTime);
     } else {
         getCSV();
-        console.log('llamada a funcion! Ibamos por la cancion numero: ' + totalSongs);
+        var finalSongNumber = (totalSongs<1) ? 1 : totalSongs;
+        console.log('llamada a funcion! Ibamos por la cancion numero: ' + finalSongNumber);
     }
 }
 
