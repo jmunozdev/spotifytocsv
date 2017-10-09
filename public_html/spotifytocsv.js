@@ -8,6 +8,11 @@ var scrollingTime = 1250; // 1250ms scrolling timer by default for a modern PC.
 var songsShownByPage = 100; // 100 is the maximum song number shown per pagination.
 var splitCharacterArtistAndAlbum = '•'; // The separation character in the string 'artist + album'
 var playListName = document.title; // The playlist name.
+var titleClassName = 'tracklist-name'; // Class used for the title text.
+var artistAndAlbumClassName = 'artists-album'; // Class used for the 'artist + album' text.
+var encodingValue = 'utf-8'; // Charset encoding value.
+var mobValue = '\uFEFF'; // MOB value according to the charset.
+var blobType = 'text/csv;charset=utf-8;'; // Type of the Blob created, including charset information.
 
 var totalSongsContainer = document.getElementsByClassName("entity-additional-info");
 var totalSongs = totalSongsContainer[0].innerText.split(' ')[0];
@@ -45,7 +50,7 @@ function recursiveScrollDown(totalSongs) {
 */
 function getCSV() {
     var titleList = ['Title']; // Header row
-    var allTitleObjects = document.getElementsByClassName("tracklist-name");
+    var allTitleObjects = document.getElementsByClassName(titleClassName);
     for (var i = 0; i < allTitleObjects.length; i++) {
         var title = allTitleObjects[i].innerText;
         titleList.push(title);
@@ -54,7 +59,7 @@ function getCSV() {
 
     var artistList = ['Artist']; // Header row
     var albumList = ['Album']; // Header row
-    var allArtistAlbumObjects = document.getElementsByClassName("artists-album");
+    var allArtistAlbumObjects = document.getElementsByClassName(artistAndAlbumClassName);
     for (var i = 0; i < allArtistAlbumObjects.length; i++) {
         var artistAndAlbumString = allArtistAlbumObjects[i].innerText;
         var splittedArtistAndAlbum = artistAndAlbumString.split(splitCharacterArtistAndAlbum);
@@ -73,10 +78,10 @@ function getCSV() {
     ;
 
     // Utf-8 encoding by default.
-    textEncoder = new TextEncoder('utf-8');
+    textEncoder = new TextEncoder(encodingValue);
     // Adding MOB prefix due to Microsoft Office compatibility.
-    var csvContentEncoded = textEncoder.encode(['\uFEFF' + csvContent]);
-    var blob = new Blob([csvContentEncoded], {type: 'text/csv;charset=utf-8;'});
+    var csvContentEncoded = textEncoder.encode([ mobValue + csvContent]);
+    var blob = new Blob([csvContentEncoded], {type: blobType});
     var filename = playListName + '.csv';
     if (navigator.msSaveBlob) { // IE 10+
         navigator.msSaveBlob(blob, filename);
