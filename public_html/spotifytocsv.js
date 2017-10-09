@@ -6,6 +6,8 @@
 
 var scrollingTime = 1250; // 1250ms scrolling timer by default for a modern PC.
 var songsShownByPage = 100; // 100 is the maximum song number shown per pagination.
+var splitCharacterArtistAndAlbum = '•'; // The separation character in the string 'artist + album'
+var playListName = document.title; // The playlist name.
 
 var totalSongsContainer = document.getElementsByClassName("entity-additional-info");
 var totalSongs = totalSongsContainer[0].innerText.split(' ')[0];
@@ -54,10 +56,10 @@ function getCSV() {
     var albumList = ['Album']; // Header row
     var allArtistAlbumObjects = document.getElementsByClassName("artists-album");
     for (var i = 0; i < allArtistAlbumObjects.length; i++) {
-        var titleAndArtistString = allArtistAlbumObjects[i].innerText;
-        var splittedTitleAndArtist = titleAndArtistString.split('•');
-        var artist = splittedTitleAndArtist[0];
-        var album = splittedTitleAndArtist[1];
+        var artistAndAlbumString = allArtistAlbumObjects[i].innerText;
+        var splittedArtistAndAlbum = artistAndAlbumString.split(splitCharacterArtistAndAlbum);
+        var artist = splittedArtistAndAlbum[0];
+        var album = splittedArtistAndAlbum[1];
         artistList.push(artist);
         albumList.push(album);
     }
@@ -75,7 +77,7 @@ function getCSV() {
     // Adding MOB prefix due to Microsoft Office compatibility.
     var csvContentEncoded = textEncoder.encode(['\uFEFF' + csvContent]);
     var blob = new Blob([csvContentEncoded], {type: 'text/csv;charset=utf-8;'});
-    var filename = document.title + '.csv';
+    var filename = playListName + '.csv';
     if (navigator.msSaveBlob) { // IE 10+
         navigator.msSaveBlob(blob, filename);
     } else {
