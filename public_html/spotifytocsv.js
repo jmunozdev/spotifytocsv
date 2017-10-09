@@ -3,8 +3,9 @@
  * @type Javascript raw file
  * 
  */
+
 var scrollingTime = 1250; // 1250ms scrolling timer by default for a modern PC.
-var songsShownByPage = 100; // 100 at the time this code is written.
+var songsShownByPage = 100; // 100 is the maximum song number shown per pagination.
 
 var totalSongsContainer = document.getElementsByClassName("entity-additional-info");
 var totalSongs = totalSongsContainer[0].innerText.split(' ')[0];
@@ -15,6 +16,11 @@ recursiveScrollDown(totalSongs);
  * Functions declarations:
  */
 
+/**
+* Scroll down the playlist page recursively, and when the end is reached 
+* calls the exporting function.
+* @param {number} totalSongs - The number of songs which are not paginated yet.
+*/
 function recursiveScrollDown(totalSongs) {
     if (totalSongs > 1) {
         setTimeout(function () {
@@ -27,10 +33,14 @@ function recursiveScrollDown(totalSongs) {
     } else {
         getCSV();
         var finalSongNumber = (totalSongs<1) ? 1 : totalSongs;
-        console.log('llamada a funcion! Ibamos por la cancion numero: ' + finalSongNumber);
+        console.log('Calling the export function at song number: ' + finalSongNumber);
     }
 }
 
+
+/**
+* Export to a CSV file all the songs + artists + albums of the current playlist.
+*/
 function getCSV() {
     var titleList = ['Title']; // Header row
     var allTitleObjects = document.getElementsByClassName("tracklist-name");
