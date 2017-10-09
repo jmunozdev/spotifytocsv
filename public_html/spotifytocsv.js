@@ -2,6 +2,12 @@
  * 
  * @type Javascript raw file
  * 
+ * This script will create a .csv file with utf-8 charset codification, with some information
+ * about the songs belonging to the current playlist open in the browser:
+ *
+ * @field Title: Title of the song.
+ * @field Artist: Author of the song.
+ * @field Album: Album of the song.
  */
 
 var scrollingTime = 1250; // 1250ms scrolling timer by default for a modern PC.
@@ -70,7 +76,7 @@ function getCSV() {
     }
     ;
 
-    var csvContent = ""; // data:text/csv;charset=utf-8,%EF%BB%BF
+    var csvContent = "";
     var listLenght = titleList.length;
     for (var i = 0; i < listLenght; i++) {
         csvContent += titleList[i] + ";" + artistList[i] + ";" + albumList[i] + "\n";
